@@ -1,9 +1,12 @@
 import { useFormContext } from "@/context/FormProvider";
 import { Button } from "../ui/button";
 import { ArrowLeft, Loader } from "lucide-react";
-import { type Props } from "@/types/form";
 import axiosInstance from "@/lib/axios";
 import { toast } from "sonner";
+
+type Props = {
+  onBack:() => void;
+}
 
 function Step5_Confirm({ onBack }: Props) {
   const { state, setPortfolio, setIsLoading, isLoading } = useFormContext();

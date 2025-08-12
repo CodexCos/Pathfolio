@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import { LogOut } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarImage } from "./ui/avatar";
 import { useFormContext } from "@/context/FormProvider";
 function Navbar() {
   const { user, logout, loading } = useAuth();

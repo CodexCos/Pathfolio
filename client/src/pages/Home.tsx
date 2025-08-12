@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 function Home() {
+  const cloudinaryImageUrl = process.env.REACT_APP_CLOUDINARY_IMAGE_URL;
   return (
     <div>
       <div className="grid h-screen p-6 lg:grid-cols-2">
@@ -17,9 +18,6 @@ function Home() {
             your work in the best light. Start building your personal brand now!
           </p>
 
-          {/* <p className="font-light lg:hidden 2xl:text-xl text-gray-600 dark:text-gray-300">
-            From intuitive design templates to seamless media uploads, we make it simple to bring your vision to life.
-          </p> */}
 
           <p className="font-light lg:hidden 2xl:text-xl text-gray-600 dark:text-gray-300">
             Stand out, connect with your audience, and grow your personal brand — all in one place. Start building your professional portfolio today!
@@ -36,7 +34,7 @@ function Home() {
            
         <div className="hidden p-0 m-0 lg:block">
           <img
-            src="https://res.cloudinary.com/dacqfonna/image/upload/v1753699452/6055621_nqn4m8.jpg"
+            src={cloudinaryImageUrl}
             alt="Home Image"
             className=" h-[90vh] w-full p-0 m-0 object-contain"
           />

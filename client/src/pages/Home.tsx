@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 function Home() {
-  const cloudinaryImageUrl = process.env.REACT_APP_CLOUDINARY_IMAGE_URL;
+  const cloudinaryImageUrl = import.meta.env.VITE_CLOUDINARY_IMAGE_URL;
   return (
     <div>
       <div className="grid h-screen p-6 lg:grid-cols-2">

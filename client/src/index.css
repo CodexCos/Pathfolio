@@ -124,5 +124,11 @@ img{
 }
 
 
+@media (width: 360px) and (height: 760px),(width:360px) and (height:800px),(width:384px) and (height:854px),(width:375px) and (height:812px),(width:390px) and (height:844px),(width:375px) and (height:667px) {
+  .about {
+    display: none;
+  }
+}
+
 
 

@@ -1,8 +1,9 @@
-import React from "react";
 import { useEffect } from "react";
-import axiosInstance from "@/lib/axios";
+import { useAuth } from "@/context/AuthProvider";
+import { toast } from "sonner";
 
 function GoogleLoginButton() {
+  const { googleLogin } = useAuth();
   useEffect(() => {
     window.google.accounts.id.initialize({
       client_id: import.meta.env.VITE_CLIENT_ID,
@@ -19,16 +20,16 @@ function GoogleLoginButton() {
     }
   }, []);
 
-  const handleLoginSuccess = (response: any) => {
-    const token = response.credential;
-    axiosInstance
-      .post("/auth/google", { token })
-      .then((res) => {
-        console.log("User data:", res.data);
-      })
-      .catch((error) => {
-        console.error("Error logging in with Google:", error);
-      });
+  const handleLoginSuccess = async (response: any) => {
+    try {
+      const token = response.credential;
+      await googleLogin(token);
+      toast.success("Logged in successfully!");
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.message || "Login failed. Please try again."
+      );
+    }
   };
 
   return (

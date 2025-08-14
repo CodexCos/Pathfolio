@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import { LogOut } from "lucide-react";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useFormContext } from "@/context/FormProvider";
 function Navbar() {
   const { user, logout, loading } = useAuth();
@@ -95,7 +95,8 @@ function Navbar() {
             <div className="flex mt-auto mb-12 space-x-5">
               <div className="flex space-x-4 items-center">
                 <Avatar className="rounded-lg h-8 w-8 ">
-                  <AvatarImage src={state.profileImage} />
+                  <AvatarImage src={state.profileImage || user.profilePicture} />
+                  <AvatarFallback>NA</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                   <span className="text-sm font-semibold">{user.username}</span>

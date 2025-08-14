@@ -3,15 +3,17 @@ import axiosInstance from "@/lib/axios";
 import { useNavigate } from "react-router-dom";
 
 type User = {
-  _id:string,
-  username:string,
-  email:string,
-}
+  _id: string;
+  username: string;
+  email: string;
+  profilePicture: string;
+};
 
 type AuthContextType = {
   user: User | null;
   loading: boolean;
   login: (data: { email: string; password: string }) => Promise<void>;
+  googleLogin:(token:string) => Promise<void>;
   signup: (data: { username: string; email: string; password: string }) => void;
   logout: () => Promise<void>;
 };
@@ -23,12 +25,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await axiosInstance.get("/portfolio/auth");
-        console.log(res.data)
+        console.log(res.data);
         setUser(res.data);
       } catch {
         setUser(null);
@@ -41,6 +42,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (data: { email: string; password: string }) => {
     await axiosInstance.post("/auth/login", data);
+    const res = await axiosInstance.get("/portfolio/auth");
+    setUser(res.data);
+  };
+
+  const googleLogin = async (token: string) => {
+    await axiosInstance.post("/auth/google", { token });
     const res = await axiosInstance.get("/portfolio/auth");
     setUser(res.data);
   };
@@ -62,7 +69,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout }}>
+    <AuthContext.Provider
+      value={{ user, loading, login,googleLogin, signup, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

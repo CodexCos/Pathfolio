@@ -6,6 +6,7 @@ import {
 } from "../utils/generateToken.js";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
 import {
   BAD_REQUEST,
   CONFLICT,
@@ -17,6 +18,62 @@ import {
 } from "../const/http.js";
 
 dotenv.config();
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+export const googleLogin = async (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res
+      .status(BAD_REQUEST)
+      .json({ message: "Google token is required!" });
+  }
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const { email, name, picture } = ticket.getPayload();
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.create({
+        username: name,
+        email,
+        password: "",
+        profilePicture: picture,
+      });
+    }
+
+    const accessToken = generateAccessToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV !== "development",
+      maxAge: 15 * 60 * 1000,
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV !== "development",
+      maxAge: 86400000,
+    });
+
+    res.status(OK).json({ message: "Logged in with Google successfully!" });
+  } catch (err) {
+    console.error("Error in googleLogin", err.message);
+    res
+      .status(INTERNAL_SERVER_ERROR)
+      .json({ message: "Internal Server Error!" });
+  }
+};
 
 export const signup = async (req, res) => {
   try {
@@ -83,7 +140,7 @@ export const login = async (req, res) => {
       httpOnly: true,
       sameSite: "strict",
       secure: process.env.NODE_ENV !== "development",
-      maxAge:  15 * 60 * 1000,
+      maxAge: 15 * 60 * 1000,
     });
 
     res.cookie("refreshToken", refreshToken, {
@@ -127,7 +184,7 @@ export const refresh = async (req, res) => {
           httpOnly: true,
           sameSite: "strict",
           secure: process.env.NODE_ENV !== "development",
-          maxAge:  15 * 60 * 1000,
+          maxAge: 15 * 60 * 1000,
         });
 
         return res.status(OK).json({ message: "Access token refreshed" });

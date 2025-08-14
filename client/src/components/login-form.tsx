@@ -9,6 +9,7 @@ import type { LoginType } from "@/types/auth";
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthProvider";
 import GoogleLoginButton from "./GoogleLoginButton";
+import ForgotPasswordDialog from "./ForgotPasswordDialog";
 
 export function LoginForm() {
   const { login } = useAuth();
@@ -65,14 +66,9 @@ export function LoginForm() {
           />
         </div>
         <div className="grid gap-2">
-          <div className="flex items-center">
+          <div className="flex justify-between  items-center">
             <Label htmlFor="password">Password</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              Forgot your password?
-            </a>
+            <ForgotPasswordDialog />
           </div>
           <Input
             onChange={handleChange}

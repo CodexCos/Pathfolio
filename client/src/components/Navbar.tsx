@@ -21,7 +21,7 @@ function Navbar() {
   };
 
   return (
-    <div className="w-full mb-6 md:mb-0 fixed bg-white md:relative flex justify-between border-2 items-center py-4 px-12">
+    <div className="w-full z-50 mb-6 md:mb-0 fixed bg-white md:relative flex justify-between border-2 items-center py-4 px-12">
       <Link to="/">
         <div className="flex items-center gap-2 font-medium">
           <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">

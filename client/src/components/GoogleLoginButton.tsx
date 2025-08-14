@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 function GoogleLoginButton() {
   const { googleLogin } = useAuth();
+  
   useEffect(() => {
     window.google.accounts.id.initialize({
       client_id: import.meta.env.VITE_CLIENT_ID,
